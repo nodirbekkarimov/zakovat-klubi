@@ -23,7 +23,7 @@ import {
   Plus,
 } from 'lucide-react';
 import { sound } from '@/lib/sound';
-const { evaluateAnswer } = require('@/lib/evaluator');
+import { evaluateAnswer } from '@/lib/evaluator';
 
 type DuelPhase = 'LOBBY' | 'ROOM_WAITING' | 'MATCHMAKING' | 'VERSUS_SCREEN' | 'ROUND_PLAY' | 'ROUND_RESULT' | 'DUEL_FINISHED';
 

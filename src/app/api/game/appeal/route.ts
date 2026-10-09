@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { evaluateAnswer } = require('@/lib/evaluator');
+import { evaluateAnswer } from '@/lib/evaluator';
 
 export async function POST(request: Request) {
   try {
@@ -32,14 +32,14 @@ export async function POST(request: Request) {
         success: true,
         accepted: true,
         verdict: 'APPELLATION_ACCEPTED',
-        message: 'Apellatsiya AI Hakamlar Hay\'ati tomonidan qabul qilindi! Javobingiz to\'g'ri deb hisoblandi va +100 XP qaytarildi.',
+        message: "Apellatsiya AI Hakamlar Hay'ati tomonidan qabul qilindi! Javobingiz to'g'ri deb hisoblandi va +100 XP qaytarildi.",
       });
     } else {
       return NextResponse.json({
         success: true,
         accepted: false,
         verdict: 'APPELLATION_REJECTED',
-        message: 'Apellatsiya rad etildi. Kiritilgan va rasmiy javob o\'rtasida jiddiy farq mavjud.',
+        message: "Apellatsiya rad etildi. Kiritilgan va rasmiy javob o'rtasida jiddiy farq mavjud.",
       });
     }
   } catch (error: any) {
