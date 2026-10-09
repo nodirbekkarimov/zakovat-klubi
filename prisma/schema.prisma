@@ -1,0 +1,144 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               String            @id @default(cuid())
+  name             String
+  email            String            @unique
+  password         String
+  avatar           String?
+  role             String            @default("USER") // USER, REFEREE, ADMIN
+  level            Int               @default(1)
+  xp               Int               @default(0)
+  elo              Int               @default(1200)
+  isBanned         Boolean           @default(false)
+  streak           Int               @default(0)
+  maxStreak        Int               @default(0)
+  totalGames       Int               @default(0)
+  correctAnswers   Int               @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  userAnswers      UserAnswer[]
+  userAchievements UserAchievement[]
+  teamMembers      TeamMember[]
+  captainTeams     Team[]            @relation("CaptainTeams")
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  icon        String     @default("BookOpen")
+  description String
+  questions   Question[]
+}
+
+model Question {
+  id                String       @id @default(cuid())
+  text              String
+  answer            String
+  acceptableAnswers String       // JSON string array
+  keywords          String       // JSON string array
+  difficulty        String       @default("MEDIUM") // EASY, MEDIUM, HARD, EXPERT
+  categoryId        String
+  category          Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  hints             String       // JSON string array
+  explanation       String
+  interestingFact   String?
+  source            String?
+  published         Boolean      @default(true)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  userAnswers       UserAnswer[]
+}
+
+model UserAnswer {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId        String
+  question          Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswer        String
+  score             Float
+  evaluationVerdict String   // CORRECT, ALMOST_CORRECT, PARTIAL, WRONG
+  xpEarned          Int
+  timeSpent         Int      // in seconds
+  hintsUsed         Int      @default(0)
+  mode              String   @default("CLASSIC") // CLASSIC, DAILY, PRACTICE, RANDOM, DUEL
+  createdAt         DateTime @default(now())
+}
+
+model Achievement {
+  id               String            @id @default(cuid())
+  key              String            @unique
+  name             String
+  description      String
+  icon             String
+  xpBonus          Int               @default(100)
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  unlockedAt    DateTime    @default(now())
+
+  @@unique([userId, achievementId])
+}
+
+model DailyChallenge {
+  id          String   @id @default(cuid())
+  date        String   @unique // YYYY-MM-DD
+  questionIds String   // JSON string array
+  createdAt   DateTime @default(now())
+}
+
+model Team {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  region    String       @default("Toshkent")
+  captainId String
+  captain   User         @relation("CaptainTeams", fields: [captainId], references: [id], onDelete: Cascade)
+  points    Int          @default(0)
+  buchholz  Float        @default(0.0)
+  members   TeamMember[]
+  createdAt DateTime     @default(now())
+}
+
+model TeamMember {
+  id       String   @id @default(cuid())
+  teamId   String
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role     String   @default("MEMBER") // CAPTAIN, MEMBER
+  joinedAt DateTime @default(now())
+
+  @@unique([teamId, userId])
+}
+
+model DuelRoom {
+  id              String   @id @default(cuid())
+  code            String   @unique // e.g. "ZK-9821"
+  status          String   @default("WAITING") // WAITING, IN_PROGRESS, FINISHED
+  hostUserId      String
+  hostName        String   @default("Bilimdon")
+  guestUserId     String?
+  guestName       String?
+  hostScore       Int      @default(0)
+  guestScore      Int      @default(0)
+  currentQuestion Int      @default(0)
+  questionsData   String   @default("[]") // JSON string array of 5 questions
+  winnerName      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

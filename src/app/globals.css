@@ -1,26 +1,118 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f1418;
+    --foreground: #ffffff;
+    --card: #161f24;
+    --card-foreground: #ffffff;
+    --gold-zakovat: #cba672;
+    --input-bg: #1e1912;
+  }
+
+  body {
+    background-color: #0f1418;
+    color: #ffffff;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* zakovatklubi.uz Custom Classes */
+.header-zakovat {
+  background: rgba(15, 20, 24, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(203, 166, 114, 0.25);
+}
+
+.zakovat-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  background-color: #cba672;
+  border: 2px solid #cba672;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 26px;
+  transition: all 0.25s ease;
+  user-select: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(203, 166, 114, 0.35);
+  cursor: pointer;
+}
+
+.zakovat-btn-primary:hover {
+  background-color: #ffffff;
+  color: #cba672;
+  border-color: #ffffff;
+}
+
+.zakovat-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  background-color: transparent;
+  border: 2px solid #cba672;
+  color: #cba672;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 26px;
+  transition: all 0.25s ease;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.zakovat-btn-outline:hover {
+  background-color: #cba672;
+  color: #ffffff;
+}
+
+.zakovat-card {
+  background-color: #161f24;
+  border: 1px solid rgba(203, 166, 114, 0.25);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.zakovat-card:hover {
+  border-color: rgba(203, 166, 114, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.zakovat-input {
+  background-color: #1e1912;
+  border: 1px solid rgba(203, 166, 114, 0.35);
+  border-radius: 28px;
+  color: #ffffff;
+  font-size: 15px;
+  padding: 12px 24px;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+
+.zakovat-input:focus {
+  border-color: #cba672;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(203, 166, 114, 0.25);
+}
+
+.gold-text {
+  color: #cba672;
+}
+
+.gold-bg {
+  background-color: #cba672;
+}
+
+.gold-border {
+  border-color: #cba672;
 }
